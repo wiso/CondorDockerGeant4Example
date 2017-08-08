@@ -1,0 +1,43 @@
+
+###############################################
+# setting verbosity
+###############################################
+
+/control/verbose 2
+/run/verbose 2
+
+###############################################
+# building calorimeter
+###############################################
+
+/testem/det/setNbOfLayers 10
+/testem/det/setNbOfAbsor  1
+/testem/det/setAbsor 1 PbWO4 0.5 cm
+/testem/det/setSizeYZ 100 cm
+
+###############################################
+# launch run
+###############################################
+
+/run/initialize
+
+/gun/particle e-
+/gun/energy 10 GeV
+
+###############################################
+# setting analysis output
+###############################################
+
+/analysis/setFileName run_homo_em_10GeV
+/analysis/h1/set 1 100 9000. 11000. MeV
+/analysis/h1/set 2 100   0.  300. MeV
+/analysis/h1/set 11 52   0.   52.  none	#long. profile in absor1
+/analysis/h1/set 12 52   0.   52.  none	#long. profile in absor2
+/analysis/h1/set 21 102  0.   102. none	#energy flow
+/analysis/h1/set 22 102  0.   102. none	#lateral energy leakage
+
+/testem/event/printModulo 100
+
+/run/beamOn 100
+
+###############################################

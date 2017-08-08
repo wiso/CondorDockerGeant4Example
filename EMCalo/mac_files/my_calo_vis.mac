@@ -1,0 +1,98 @@
+#
+# Macro file for the initialization phase of "TestEm3.cc"
+#
+# Sets some default verbose
+# and initializes the graphic.
+#
+/control/verbose 2
+/run/verbose 2
+#
+/run/initialize
+#
+# Use this open statement to create an OpenGL view:
+
+/vis/open OGL 
+
+#
+# Disable auto refresh and quieten vis messages whilst scene and
+# trajectories are established:
+
+/vis/viewer/set/autoRefresh false
+/vis/verbose errors
+
+#
+# Draw geometry:
+/vis/drawVolume
+#
+# Specify view angle:
+#/vis/viewer/set/viewpointThetaPhi 60. 0.
+#
+# Specify zoom value:
+/vis/viewer/zoom 1.4
+#
+# Draw coordinate axes:
+#/vis/scene/add/axes 0 0 0 0.4 m
+#
+
+/vis/scene/add/trajectories rich
+
+# Filters : retain only electrons
+#/vis/filtering/trajectories/create/particleFilter
+#/vis/filtering/trajectories/particleFilter-0/add gamma
+
+# Filters : retain only particles in a certain pt range
+#/vis/filtering/trajectories/create/attributeFilter
+#/vis/filtering/trajectories/attributeFilter-0/setAttribute IMag
+#/vis/filtering/trajectories/attributeFilter-0/addInterval 10 MeV 1000 MeV
+
+# Filters : retain only events for a given creation process
+#/vis/filtering/trajectories/create/attributeFilter
+#/vis/filtering/trajectories/attributeFilter-0/setAttribute CPN
+#/vis/filtering/trajectories/attributeFilter-0/addValue eIoni
+
+# Drawing options : draw by particle ID
+#/vis/modeling/trajectories/create/drawByParticleID
+#/vis/modeling/trajectories/drawByParticleID-0/set e- blue
+#/vis/modeling/trajectories/drawByParticleID-0/set e+ red
+#/vis/modeling/trajectories/drawByParticleID-0/set gamma green
+
+/vis/viewer/set/autoRefresh true
+/vis/verbose warnings
+
+###########################################################
+# Detector GEOMETRY
+###########################################################
+
+/testem/det/setNbOfLayers 40
+/testem/det/setNbOfAbsor  2
+/testem/det/setAbsor 1 liquidArgon 0.4 cm
+/testem/det/setAbsor 2 Lead 0.6 cm
+/testem/det/setSizeYZ 100 cm
+/testem/det/update
+
+#/testem/det/setNbOfLayers 40
+#/testem/det/setNbOfAbsor  1
+#/testem/det/setAbsor 1 PbWO4 1.0 cm
+#/testem/det/setSizeYZ 100 cm
+#/testem/det/update
+
+/run/initialize
+
+###########################################################
+# Particle generator
+###########################################################
+
+/testem/gun/setDefault
+/gun/particle e-
+/gun/energy 10 GeV
+
+/analysis/setFileName visible.root
+/analysis/h1/set 1  100  1000.  10000.  MeV
+/analysis/h1/set 2  100  8000.  10000.  MeV
+/analysis/h1/set 11 200     0.    200.  none #long. profile in absor1
+/analysis/h1/set 12 200     0.    200.  none #long. profile in absor2
+/analysis/h1/set 21  50     0.     50.  none #energy flow
+/analysis/h1/set 22  50     0.     50.  none #lateral energy leakage
+
+/testem/event/printModulo 10
+/run/beamOn 1
