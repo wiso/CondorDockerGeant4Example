@@ -21,4 +21,21 @@ The Docker image containing Geant4 is already built and pushed to the Docker hub
 
     docker build .
     
- from the directory where [Dockerfile](Dockerfile) is present (with the right permissions, for example as root).
+ from the directory where [Dockerfile](Dockerfile) is present (with the right permissions, for example as root). You can also add a flat `-t` to tag the build
+ 
+ ## How to push the Docker image
+You can push the image to a docker-hub. This image is pushed automatically to dockerhub.com each time a commit is pushed into this git repository. If you want you can do it manually.
+
+If you haven't tag your image do that. Without rebuilding just do `docker images` and note down the `IMAGE ID`, then tag it. If you want to push to dockerhub.com (and you have an account there) tag it as `myusername/tag`, eventually `myusername/tag:version`. If you want to push to another server `servename:port/tag`.
+
+Before pushing you need to login into the docker hub
+
+    docker login
+    
+eventually specify a server name as
+
+    docker login distribution.mi.infn.it:1443
+    
+and then push, for example
+
+    docker push distribution.mi.infn.it:1443/condordockergeant4example
